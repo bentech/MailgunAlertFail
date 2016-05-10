@@ -12,7 +12,7 @@ use Mailgun\Mailgun;
 $client = new \Http\Adapter\Guzzle6\Client();
 $mg = new Mailgun('<INSERT YOUR MAILGUN PRIVATE KEY>', $client);
 
-$domain = "<INSERT YOUR MAILGUN DOMAIN";
+$domain = "<INSERT YOUR MAILGUN DOMAIN>";
 
 $headers = json_decode( $_POST["message-headers"]);
 
@@ -35,7 +35,7 @@ if(!(endsWith($sender, $domain) || endsWith($sender, $domain))){
 
 $json_string = json_encode($data, JSON_PRETTY_PRINT);
 
-$mg->sendMessage($domain, array('from'    => 'mailfail@'.$headers["domain"], 
+$mg->sendMessage($domain, array('from'    => 'mailfail@'.$domain, 
                                 'to'      => $from, 
                                 'subject' => 'Your mail didn\'t send!', 
                                 'text'    => $json_string . "\n".$_POST["description"]
