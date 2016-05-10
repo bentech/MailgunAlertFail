@@ -17,11 +17,15 @@ $domain = "<INSERT YOUR MAILGUN DOMAIN";
 $headers = json_decode( $_POST["message-headers"]);
 
 $sender = NULL;
+$from = NULL;
 
 foreach($headers as $h)
 {
     if($h[0] == "Sender"){
         $sender = $h[1];
+    }
+    if($h[0] == "From"){
+        $from = $h[1];
     }
 }
 
@@ -32,9 +36,9 @@ if(!(endsWith($sender, $domain) || endsWith($sender, $domain))){
 $json_string = json_encode($data, JSON_PRETTY_PRINT);
 
 $mg->sendMessage($domain, array('from'    => 'mailfail@'.$headers["domain"], 
-                                'to'      => $sender, 
+                                'to'      => $from, 
                                 'subject' => 'Your mail didn\'t send!', 
-                                'text'    => $json_string
+                                'text'    => $json_string . "\n".$_POST["description"]
                             ));
 
 
